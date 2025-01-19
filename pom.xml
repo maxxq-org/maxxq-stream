@@ -9,11 +9,11 @@
 		<version>1.0.1</version>
 	</parent>
 
-	<groupId>maxxq.org.batch</groupId>
-	<artifactId>maxxq-batch</artifactId>
+	<groupId>maxxq.org.stream</groupId>
+	<artifactId>maxxq-stream</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>maxxq-batch</name>
+	<name>maxxq-stream</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>17</java.version>
