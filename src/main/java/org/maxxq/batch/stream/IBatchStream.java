@@ -10,11 +10,9 @@ public interface IBatchStream<T> {
 
 	public IBatchStream<T> consume(Consumer<T> consumer);
 
-	public Collection<T> collect();
+	public <Z extends Collection<T>> Z collect(Z collection);
 
 	public BatchStream<T> parallel(ExecutorService exectorService);
-	
-	public BatchStream<T> timeoutForSuppliersToRespond(int timeoutForSuppliersToRespond);
-	
-	public BatchStream<T> parallel(ExecutorService exectorService, int timeoutForSuppliersToRespond);
+
+	public BatchStream<T> maxProcessingTimeInSeconds(int timeoutForSuppliersToRespond);
 }

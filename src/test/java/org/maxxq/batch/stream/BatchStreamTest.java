@@ -1,45 +1,42 @@
 package org.maxxq.batch.stream;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Random;
+import java.util.List;
 import java.util.concurrent.Executors;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 public class BatchStreamTest {
-	private final Random random = new Random();
-
 	@Test
+	@RepeatedTest(100)
 	public void map() {
-		Collection<Integer> result = BatchStream
-				.of(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"))
-				.parallel(Executors.newFixedThreadPool(10))
-				.timeoutForSuppliersToRespond(10)
-				.consume(numericString -> System.out.println("1: " + numericString))
+		List<Integer> result = BatchStream
+				.of(Arrays.asList("1", "2", "3"))
+				.parallel(Executors.newFixedThreadPool(3))
+//				.maxProcessingTimeInSeconds(10)
 				.map(numericString -> numericString + "0")
-				.consume(numericString -> System.out.println("2: " + numericString))
 				.map(someString -> Integer.parseInt(someString))
-				.consume(number -> System.out.println("3: " + number))
 				.consume(number -> sleep(number))
-				.consume(number -> System.out.println("4: " + number))
-				.collect();
+				.collect(new ArrayList<Integer>());
 		
 		result.forEach(number -> System.out.println(number));
 
-		Assertions.assertThat(result.size()).isEqualTo(10);
-		Assertions.assertThat(result).contains(10);
-		Assertions.assertThat(result).contains(20);
+		//because of the parallel processing and sleep time, results will endup in the opposite order
+		//this proves parallel processing really took place and the resulting collection can have a different
+		//order than the input collection
+		Assertions.assertThat(result.size()).isEqualTo(3);
+		Assertions.assertThat(result.get(0)).isEqualTo(30);
+		Assertions.assertThat(result.get(1)).isEqualTo(20);
+		Assertions.assertThat(result.get(2)).isEqualTo(10);
 	}
 
 	private void sleep(int number) {
 		try {
-			Thread.sleep(Math.abs(random.nextInt() % 10000));
-//			Thread.sleep(1000 - 10 * number);
+			Thread.sleep(200 -  2 * number);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 }
