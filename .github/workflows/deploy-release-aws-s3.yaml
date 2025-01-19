@@ -1,0 +1,16 @@
+name: Deploy release version to Maven S3
+
+# Run workflow when the workflow to check the quality is completed
+on:
+  push:
+    branches: [ release/** ]
+    
+jobs:
+  publish-package:
+    permissions:
+      contents: write
+    uses: maxxq-org/maxxq-workflows/.github/workflows/maven-publish-release-s3.yml@main
+    with:
+      java-version: '17'
+      java-distribution: 'temurin'
+    secrets: inherit
