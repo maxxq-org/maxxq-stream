@@ -13,4 +13,8 @@ public interface IBatchStream<T> {
 	public Collection<T> collect();
 
 	public BatchStream<T> parallel(ExecutorService exectorService);
+	
+	public BatchStream<T> timeoutForSuppliersToRespond(int timeoutForSuppliersToRespond);
+	
+	public BatchStream<T> parallel(ExecutorService exectorService, int timeoutForSuppliersToRespond);
 }
